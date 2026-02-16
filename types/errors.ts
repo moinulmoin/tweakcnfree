@@ -65,6 +65,7 @@ export type ApiErrorCode =
   | "SUBSCRIPTION_REQUIRED"
   | "VALIDATION_ERROR"
   | "UNAUTHORIZED"
+  | "AI_PROVIDER_UNAVAILABLE"
   | "UNKNOWN_ERROR";
 
 export class ApiError extends Error {
