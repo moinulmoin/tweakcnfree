@@ -1,6 +1,7 @@
 import { authClient } from "@/lib/auth-client";
 import { useAuthStore } from "@/store/auth-store";
 import { toast } from "@/hooks/use-toast";
+import { AI_REQUEST_FREE_TIER_LIMIT } from "@/lib/constants";
 import { PostLoginActionType } from "./use-post-login-action";
 import { useSubscription } from "./use-subscription";
 
@@ -50,7 +51,7 @@ export function useSubscriptionGuard() {
       toast({
         title: "Daily limit reached",
         description:
-          "You've used all 5 free AI requests for today. Come back tomorrow!",
+          `You've used all ${AI_REQUEST_FREE_TIER_LIMIT} free AI requests for today. Come back tomorrow!`,
         variant: "destructive",
       });
       return false;
