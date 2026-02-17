@@ -1,89 +1,109 @@
 <div align="center">
-  <h1>tweakcn.com</h1>
-</div>
-
-<div align="center">
-  <a href="https://vercel.com/oss">
-    <img alt="Vercel OSS Program" src="https://vercel.com/oss/program-badge.svg" />
-  </a>
-  <br />
-  <br />
-  <a href="https://discord.gg/Phs4u2NM3n" target="_blank">
-    <img alt="Discord" src="https://img.shields.io/discord/1353416868769173576?style=for-the-badge&logo=discord&logoColor=%23ffffff">
-  </a>
-  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/jnsahaj/tweakcn?style=for-the-badge&logo=github">
-  <a href="https://x.com/iamsahaj_xyz">
-    <img alt="X (formerly Twitter) URL" src="https://img.shields.io/twitter/url?url=https%3A%2F%2Fx.com%2Fiamsahaj_xyz&style=for-the-badge&logo=x&label=%40iamsahaj_xyz&color=%2300000000" />
-  </a>
+  <h1>tweakcn (Free Self-Hosted Edition)</h1>
+  <p><strong>Visual Theme Editor for Tailwind CSS & shadcn/ui — with generous AI limits, free for everyone.</strong></p>
 </div>
 
 <br />
 
-**[tweakcn](https://tweakcn.com)** is a powerful Visual Theme Editor for tailwind CSS & shadcn/ui components. It comes with Beautiful theme presets to get started, while aiming to offer advanced customisation for each aspect of your UI
+This is a self-hostable fork of [tweakcn](https://github.com/jnsahaj/tweakcn) with the paywall removed. The original tweakcn has a Pro subscription tier — this edition makes everything free with a daily AI usage limit that resets every day.
 
-![tweakcn.com](public/og-image.v050725.png)
+**Why?** The original limits are too tight for real use. If you're building themes regularly, you need more room. Self-host this and use it as much as you need.
 
-## Motivation
+## What's Different
 
-Websites made with shadcn/ui famously look the same. tweakcn is a tool that helps you customize shadcn/ui components visually, to make your components stand-out. The goal is to build a platform where a user can discover endless customization options and then have the ability to put their own twist on it.
+| Feature | Original tweakcn | This Edition |
+|---|---|---|
+| Theme customization | Free | Free |
+| AI theme generation | 5 lifetime, then paid | **5/day, resets daily** |
+| AI from images | Pro only | **Free** |
+| Save themes | Limited free | **Free** |
+| Subscription/paywall | Yes ($8/mo) | **None** |
+| AI provider | Google Gemini | **GLM (Z.ai)** |
+| Self-hostable | No | **Yes** |
 
-## Current Features
-
-You can find the full feature list here: https://tweakcn.com/#features
-
-## Run Locally
-
-**IMPORTANT: For contributions, please see [CONTRIBUTING.md](CONTRIBUTING.md).**
+## Self-Hosting
 
 ### Prerequisites
 
-- Node.js 18+
-- npm / yarn / pnpm
+- Node.js 18+ and pnpm
+- A PostgreSQL database (Neon, Supabase, Railway, any provider — or your own)
+- A [Z.ai](https://z.ai/model-api) API key (free tier available)
+- OAuth credentials (Google or GitHub) for user authentication
 
-### Installation
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/jnsahaj/tweakcn.git
-cd tweakcn
-```
-
-2. Install dependencies:
+### 1. Clone and install
 
 ```bash
-npm install
+git clone https://github.com/moinulmoin/tweakcnfree.git
+cd tweakcnfree
+pnpm install
 ```
 
-3. Start the development server:
+### 2. Configure environment
+
+Copy `.env.example` to `.env.local` and fill in your values:
 
 ```bash
-npm run dev
+cp .env.example .env.local
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+**Required variables:**
 
-## Contributors
+| Variable | Description |
+|---|---|
+| `DATABASE_URL` | PostgreSQL connection string |
+| `BETTER_AUTH_SECRET` | Any random string for session encryption |
+| `GOOGLE_CLIENT_ID` | Google OAuth client ID ([setup](https://www.better-auth.com/docs/authentication/google)) |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret |
+| `GLM_API_KEY` | Z.ai API key from [z.ai/model-api](https://z.ai/model-api) |
 
-<a href="https://github.com/jnsahaj/tweakcn/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=jnsahaj/tweakcn" />
-</a>
+**Optional variables:**
 
-Made with [contrib.rocks](https://contrib.rocks).
+| Variable | Default | Description |
+|---|---|---|
+| `GLM_BASE_URL` | `https://api.z.ai/api/coding/paas/v4` | Z.ai endpoint (coding plan, regular, or China) |
+| `GLM_BASE_MODEL_ID` | `glm-4.6v` | Vision model for chat + image input |
+| `GLM_THEME_MODEL_ID` | `glm-4.7` | Flagship model for theme generation |
+| `GLM_PROMPT_MODEL_ID` | `glm-4.7-flash` | Fast model for prompt enhancement |
+| `GITHUB_CLIENT_ID` | — | GitHub OAuth (alternative to Google) |
+| `GITHUB_CLIENT_SECRET` | — | GitHub OAuth secret |
+| `GOOGLE_FONTS_API_KEY` | — | Enables the font browser |
 
-### Interested in Contributing?
+### 3. Push database schema
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+```bash
+pnpm drizzle-kit push
+```
 
-# Star History
+### 4. Run
 
-<p align="center">
-  <a target="_blank" href="https://star-history.com/#jnsahaj/tweakcn&Date">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=jnsahaj/tweakcn&type=Date&theme=dark">
-      <img alt="GitHub Star History for jnsahaj/tweakcn" src="https://api.star-history.com/svg?repos=jnsahaj/tweakcn&type=Date">
-    </picture>
-  </a>
-</p>
+```bash
+pnpm dev
+```
 
-<!-- GitAds-Verify: HX84XPI5OQ816367AROGJ9SROARUHQER -->
+Open [http://localhost:3000](http://localhost:3000).
+
+### Production deployment
+
+```bash
+pnpm build
+pnpm start
+```
+
+Works on Vercel, Railway, Fly.io, any Node.js host. The database is external (just a URL), so there are no Docker/volume concerns — deploy the app anywhere and point `DATABASE_URL` at your PostgreSQL instance.
+
+## Adjusting Limits
+
+Edit `lib/constants.ts` to change the daily AI request limit:
+
+```ts
+export const AI_REQUEST_FREE_TIER_LIMIT = 5; // per day — change to whatever you want
+```
+
+## Credits
+
+- Built on [tweakcn](https://github.com/jnsahaj/tweakcn) by [Sahaj](https://github.com/jnsahaj)
+- AI powered by [Zhipu AI / Z.ai](https://z.ai) GLM models via [zhipu-ai-provider](https://github.com/Xiang-CH/zhipu-ai-provider)
+
+## Sponsor
+
+**Sponsored by [Ideaplexa LLC](https://ideaplexa.com)**
