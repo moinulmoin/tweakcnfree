@@ -73,6 +73,7 @@ export function CardsStats() {
             >
               <Line
                 type="monotone"
+                isAnimationActive={false}
                 strokeWidth={2}
                 dataKey="revenue"
                 stroke="var(--color-revenue)"
@@ -102,6 +103,7 @@ export function CardsStats() {
             >
               <Area
                 dataKey="subscription"
+                isAnimationActive={false}
                 fill="var(--color-subscription)"
                 fillOpacity={0.05}
                 stroke="var(--color-subscription)"

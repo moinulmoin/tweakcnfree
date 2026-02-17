@@ -106,7 +106,7 @@ export function CardsActivityGoal() {
         </div>
         <ChartContainer config={chartConfig} className="max-h-20 w-full">
           <BarChart data={data}>
-            <Bar dataKey="goal" radius={4} fill="var(--color-goal)" />
+            <Bar dataKey="goal" radius={4} fill="var(--color-goal)" isAnimationActive={false} />
           </BarChart>
         </ChartContainer>
       </CardContent>

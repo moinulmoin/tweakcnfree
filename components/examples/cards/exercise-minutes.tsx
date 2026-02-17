@@ -90,6 +90,7 @@ export function CardsExerciseMinutes() {
             />
             <Line
               type="monotone"
+              isAnimationActive={false}
               dataKey="today"
               strokeWidth={2}
               stroke="var(--color-today)"
@@ -102,6 +103,7 @@ export function CardsExerciseMinutes() {
             />
             <Line
               type="monotone"
+              isAnimationActive={false}
               strokeWidth={2}
               dataKey="average"
               stroke="var(--color-average)"
