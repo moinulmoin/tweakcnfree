@@ -164,7 +164,7 @@ export default function CustomTextarea({
       if (currentContent === nextContent) return;
 
       // Preserve cursor position at the end
-      editor.commands.setContent(externalEditorContent, { emitUpdate: false });
+      editor.commands.setContent(externalEditorContent, false);
       editor.commands.focus("end");
     } catch (_e) {
       // If setContent fails for any reason, silently ignore; user can keep typing
