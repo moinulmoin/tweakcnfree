@@ -156,9 +156,9 @@ export function BlockViewerDisplay({
 
           <ResizablePanel
             panelRef={resizablePanelRef}
-            className="bg-background relative min-w-[350px] lg:aspect-auto"
+            className="bg-background relative lg:aspect-auto"
             defaultSize={100}
-            minSize={30}
+            minSize="350px"
           >
             {children}
           </ResizablePanel>

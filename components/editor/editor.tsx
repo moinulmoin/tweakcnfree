@@ -108,9 +108,9 @@ const Editor: React.FC<EditorProps> = ({ themePromise }) => {
           <ResizablePanelGroup orientation="horizontal" className="isolate">
             <ResizablePanel
               defaultSize={30}
-              minSize={20}
+              minSize="22rem"
               maxSize={40}
-              className="z-1 min-w-[max(20%,22rem)]"
+              className="z-1"
             >
               <div className="relative isolate flex h-full flex-1 flex-col">
                 <ThemeControlPanel
