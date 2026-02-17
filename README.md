@@ -102,7 +102,7 @@ export const AI_REQUEST_FREE_TIER_LIMIT = 5; // per day — change to whatever y
 ## Credits
 
 - Built on [tweakcn](https://github.com/jnsahaj/tweakcn) by [Sahaj](https://github.com/jnsahaj)
-- AI powered by [Zhipu AI / Z.ai](https://z.ai) GLM models via [zhipu-ai-provider](https://github.com/Xiang-CH/zhipu-ai-provider)
+- AI powered by [Zhipu AI / Z.ai](https://z.ai) GLM models via [zhipu-ai-provider](https://github.com/Xiang-CH/zhipu-ai-provider), using the [Z.ai Coding Plan](https://z.ai/pricing)
 
 ## Sponsor
 
