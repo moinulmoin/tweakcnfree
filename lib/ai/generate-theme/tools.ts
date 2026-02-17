@@ -1,7 +1,7 @@
 import { themeStylesOutputSchema } from "@/lib/ai/generate-theme";
 import { baseProviderOptions, myProvider } from "@/lib/ai/providers";
 import { AdditionalAIContext } from "@/types/ai";
-import { streamObject, tool } from "ai";
+import { Output, streamText, tool } from "ai";
 import z from "zod";
 
 export const THEME_GENERATION_TOOLS = {
@@ -12,15 +12,17 @@ export const THEME_GENERATION_TOOLS = {
     execute: async (_input, { messages, abortSignal, toolCallId, experimental_context }) => {
       const { writer } = experimental_context as AdditionalAIContext;
 
-      const { partialObjectStream, object } = streamObject({
+      const { partialOutputStream, output } = streamText({
         abortSignal,
         model: myProvider.languageModel("theme-generation"),
         providerOptions: baseProviderOptions,
-        schema: themeStylesOutputSchema,
+        output: Output.object({
+          schema: themeStylesOutputSchema,
+        }),
         messages,
       });
 
-      for await (const chunk of partialObjectStream) {
+      for await (const chunk of partialOutputStream) {
         writer.write({
           id: toolCallId,
           type: "data-generated-theme-styles",
@@ -29,7 +31,7 @@ export const THEME_GENERATION_TOOLS = {
         });
       }
 
-      const themeStyles = await object;
+      const themeStyles = await output;
 
       writer.write({
         id: toolCallId,

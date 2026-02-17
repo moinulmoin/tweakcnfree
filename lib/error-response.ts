@@ -40,7 +40,7 @@ const AI_PROVIDER_RATE_LIMIT_CODES = new Set([
  *
  * Z.ai returns 429 with `{ error: { code: "1302", message: "..." } }`.
  */
-function isAIProviderRateLimitError(error: unknown): boolean {
+export function isAIProviderRateLimitError(error: unknown): boolean {
   if (!(error instanceof Error)) return false;
 
   // The AI SDK's APICallError exposes statusCode and data as own properties.

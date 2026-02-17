@@ -2,7 +2,7 @@ import { recordAIUsage } from "@/actions/ai-usage";
 import { THEME_GENERATION_TOOLS } from "@/lib/ai/generate-theme/tools";
 import { GENERATE_THEME_SYSTEM } from "@/lib/ai/prompts";
 import { baseProviderOptions, myProvider } from "@/lib/ai/providers";
-import { handleError } from "@/lib/error-response";
+import { handleError, isAIProviderRateLimitError } from "@/lib/error-response";
 import { getCurrentUserId, logError } from "@/lib/shared";
 import { validateSubscriptionAndUsage } from "@/lib/subscription";
 import { AdditionalAIContext, ChatMessage } from "@/types/ai";
@@ -52,6 +52,13 @@ export async function POST(req: NextRequest) {
     const modelMessages = await convertMessagesToModelMessages(messages);
 
     const stream = createUIMessageStream<ChatMessage>({
+      onError: (error) => {
+        console.error("[generate-theme] stream error:", error);
+        if (isAIProviderRateLimitError(error)) {
+          return "AI service is temporarily busy. Please try again in a few minutes.";
+        }
+        return "Failed to generate theme. Please try again.";
+      },
       execute: ({ writer }) => {
         const context: AdditionalAIContext = { writer };
         const model = myProvider.languageModel("base");
@@ -65,7 +72,7 @@ export async function POST(req: NextRequest) {
           tools: THEME_GENERATION_TOOLS,
           stopWhen: stepCountIs(5),
           onError: (error) => {
-            if (error instanceof Error) console.error(error);
+            console.error("[generate-theme] streamText error:", error);
           },
           onFinish: async (result) => {
             const { totalUsage } = result;
@@ -85,7 +92,6 @@ export async function POST(req: NextRequest) {
         writer.merge(
           result.toUIMessageStream({
             messageMetadata: ({ part }) => {
-              // `toolName` is not typed for some reason, must be kept in sync with the actual tool names
               if (part.type === "tool-result" && part.toolName === "generateTheme") {
                 return { themeStyles: part.output };
               }
