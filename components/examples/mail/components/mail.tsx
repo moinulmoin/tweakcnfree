@@ -58,11 +58,11 @@ export function Mail({
         className="h-full max-h-[800px] items-stretch"
       >
         <ResizablePanel
-          defaultSize={defaultLayout[0]}
-          collapsedSize={navCollapsedSize}
+          defaultSize={`${defaultLayout[0]}%`}
+          collapsedSize={`${navCollapsedSize}%`}
           collapsible={true}
-          minSize={15}
-          maxSize={20}
+          minSize="15%"
+          maxSize="20%"
           onResize={(panelSize) => {
             const collapsed = panelSize.asPercentage <= navCollapsedSize;
             setIsCollapsed(collapsed);
@@ -158,7 +158,7 @@ export function Mail({
           />
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
+        <ResizablePanel defaultSize={`${defaultLayout[1]}%`} minSize="30%">
           <Tabs defaultValue="all">
             <div className="flex items-center px-4 py-1.5">
               <h1 className="text-foreground text-xl font-bold">Inbox</h1>
@@ -185,7 +185,7 @@ export function Mail({
           </Tabs>
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={defaultLayout[2]} minSize={30}>
+        <ResizablePanel defaultSize={`${defaultLayout[2]}%`} minSize="30%">
           <MailDisplay mail={mails.find((item) => item.id === mail.selected) || null} />
         </ResizablePanel>
       </ResizablePanelGroup>

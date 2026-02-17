@@ -94,7 +94,7 @@ export function BlockViewerToolbar({
             value={toggleValue}
             onValueChange={(value) => {
               if (value && resizablePanelRef?.current) {
-                resizablePanelRef.current.resize(parseInt(value));
+                resizablePanelRef.current.resize(`${value}%`);
                 setToggleValue(value);
               }
             }}
@@ -132,7 +132,7 @@ export function BlockViewerDisplay({
     const mql = window.matchMedia("(max-width: 1023px)");
     const resizePanel = () => {
       if (window.innerWidth < 1024 && resizablePanelRef?.current) {
-        resizablePanelRef.current.resize(100);
+        resizablePanelRef.current.resize("100%");
         setToggleValue("100");
       }
     };
@@ -157,14 +157,14 @@ export function BlockViewerDisplay({
           <ResizablePanel
             panelRef={resizablePanelRef}
             className="bg-background relative lg:aspect-auto"
-            defaultSize={100}
+            defaultSize="100%"
             minSize="350px"
           >
             {children}
           </ResizablePanel>
 
           <ResizableHandle className="after:bg-border relative inset-x-0 mx-auto hidden w-3 border-l bg-transparent after:absolute after:top-1/2 after:h-8 after:w-[4px] after:-translate-y-1/2 after:rounded-full after:transition-all hover:after:h-12 active:after:h-12 lg:block" />
-          <ResizablePanel defaultSize={0} minSize={0} />
+          <ResizablePanel defaultSize="0%" minSize="0%" />
         </ResizablePanelGroup>
       </div>
     </ComponentErrorBoundary>
