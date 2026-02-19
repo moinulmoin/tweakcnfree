@@ -41,7 +41,7 @@ const navbarItems = [
 ];
 
 export function Header({ isScrolled, mobileMenuOpen, setMobileMenuOpen }: HeaderProps) {
-  const { stargazersCount } = useGithubStars("jnsahaj", "tweakcn");
+  const { stargazersCount } = useGithubStars("moinulmoin", "tweakcnfree");
 
   const handleScrollToSection = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -61,7 +61,7 @@ export function Header({ isScrolled, mobileMenuOpen, setMobileMenuOpen }: Header
         isScrolled ? "bg-background/90 border-border/20 border-b shadow-xs" : "bg-transparent"
       )}
     >
-      <div className="container mx-auto relative flex h-16 items-center justify-between px-4 md:px-6">
+      <div className="relative container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/">
           <div className="flex items-center gap-2 font-bold">
             <Logo className="size-6" />

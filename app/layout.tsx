@@ -13,18 +13,18 @@ import { Suspense } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Beautiful themes for shadcn/ui — tweakcn | Theme Editor & Generator",
+  title: "Beautiful themes for shadcn/ui — freetweakcn | Free Theme Editor & Generator",
   description:
-    "Customize theme for shadcn/ui with tweakcn's interactive editor. Supports Tailwind CSS v4, Shadcn UI, and custom styles. Modify properties, preview changes, and get the code in real time.",
+    "Customize theme for shadcn/ui with freetweakcn's interactive editor. Supports Tailwind CSS v4, Shadcn UI, and custom styles. Modify properties, preview changes, and get the code in real time.",
   keywords:
     "theme editor, theme generator, shadcn, ui, components, react, tailwind, button, editor, visual editor, component editor, web development, frontend, design system, UI components, React components, Tailwind CSS, shadcn/ui themes",
-  authors: [{ name: "Sahaj Jain" }],
+  authors: [{ name: "Moinul Moin" }],
   openGraph: {
-    title: "Beautiful themes for shadcn/ui — tweakcn | Theme Editor & Generator",
+    title: "Beautiful themes for shadcn/ui — freetweakcn | Free Theme Editor & Generator",
     description:
-      "Customize theme for shadcn/ui with tweakcn's interactive editor. Supports Tailwind CSS v4, Shadcn UI, and custom styles. Modify properties, preview changes, and get the code in real time.",
-    url: "https://tweakcn.com/",
-    siteName: "tweakcn",
+      "Customize theme for shadcn/ui with freetweakcn's interactive editor. Supports Tailwind CSS v4, Shadcn UI, and custom styles. Modify properties, preview changes, and get the code in real time.",
+    url: "https://github.com/moinulmoin/tweakcnfree",
+    siteName: "freetweakcn",
     images: [
       {
         url: "https://tweakcn.com/og-image.v050725.png",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Beautiful themes for shadcn/ui — tweakcn | Theme Editor & Generator",
+    title: "Beautiful themes for shadcn/ui — freetweakcn | Free Theme Editor & Generator",
     description:
       "Customize theme for shadcn/ui with tweakcn's interactive editor. Supports Tailwind CSS v4, Shadcn UI, and custom styles. Modify properties, preview changes, and get the code in real time.",
     images: ["https://tweakcn.com/og-image.v050725.png"],

@@ -18,7 +18,7 @@ interface FigmaHeaderProps {
 }
 
 export function FigmaHeader({ isScrolled, mobileMenuOpen, setMobileMenuOpen }: FigmaHeaderProps) {
-  const { stargazersCount } = useGithubStars("jnsahaj", "tweakcn");
+  const { stargazersCount } = useGithubStars("moinulmoin", "tweakcnfree");
 
   return (
     <header

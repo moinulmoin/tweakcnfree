@@ -1,11 +1,13 @@
 <div align="center">
-  <h1>tweakcn (Free Self-Hosted Edition)</h1>
+  <h1>freetweakcn</h1>
   <p><strong>Visual Theme Editor for Tailwind CSS & shadcn/ui — with generous AI limits, free for everyone.</strong></p>
 </div>
 
 <br />
 
-This is a self-hostable fork of [tweakcn](https://github.com/jnsahaj/tweakcn) with the paywall removed. The original tweakcn has a Pro subscription tier — this edition makes everything free with a daily AI usage limit that resets every day.
+**freetweakcn** is a self-hosted fork of [tweakcn](https://github.com/jnsahaj/tweakcn) with the paywall removed. The original tweakcn has a Pro subscription tier — this edition makes everything free with a daily AI usage limit that resets every day.
+
+**Acknowledgments:** Built on the excellent work of [tweakcn](https://github.com/jnsahaj/tweakcn) by [Sahaj](https://github.com/jnsahaj). This fork removes the subscription paywall and makes it self-hostable with any OpenAI-compatible AI provider.
 
 **Why?** The original limits are too tight for real use. If you're building themes regularly, you need more room. Self-host this and use it as much as you need.
 
@@ -107,7 +109,7 @@ export const AI_REQUEST_FREE_TIER_LIMIT = 5; // per day — change to whatever y
 
 ## Credits
 
-- Built on [tweakcn](https://github.com/jnsahaj/tweakcn) by [Sahaj](https://github.com/jnsahaj)
+- Built on [tweakcn](https://github.com/jnsahaj/tweakcn) by [Sahaj](https://github.com/jnsahaj) — thank you for creating such an amazing tool!
 - AI powered by [Novita AI](https://novita.ai/) (Coding plan) — works with any OpenAI-compatible provider
 
 ## Sponsor

@@ -3,9 +3,9 @@ import Editor from "@/components/editor/editor";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "tweakcn — Theme Generator for shadcn/ui",
+  title: "freetweakcn — Free Theme Generator for shadcn/ui",
   description:
-    "Easily customize and preview your shadcn/ui theme with tweakcn. Modify colors, fonts, and styles in real-time.",
+    "Easily customize and preview your shadcn/ui theme with freetweakcn. Modify colors, fonts, and styles in real-time.",
 };
 
 export default async function EditorPage({ params }: { params: Promise<{ themeId: string[] }> }) {
