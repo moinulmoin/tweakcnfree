@@ -158,7 +158,7 @@ export function useUpdateTheme() {
       }
       handleMutationError(error as Error, "update");
     },
-    onSettled: (data, error, variables) => {
+    onSettled: (_data, _error, variables) => {
       queryClient.invalidateQueries({ queryKey: themeKeys.lists() });
       queryClient.invalidateQueries({ queryKey: themeKeys.detail(variables.id) });
     },

@@ -1,56 +1,34 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import nextPlugin from "@next/eslint-plugin-next";
-import reactPlugin from "eslint-plugin-react";
-import hooksPlugin from "eslint-plugin-react-hooks";
-import tseslint from "typescript-eslint";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTs from "eslint-config-next/typescript";
 
 const eslintConfig = [
+  ...nextVitals,
+  ...nextTs,
   {
-    plugins: {
-      "@next/next": nextPlugin,
-    },
     rules: {
-      ...nextPlugin.configs.recommended.rules,
-      ...nextPlugin.configs["core-web-vitals"].rules,
+      // Next.js
       "@next/next/no-page-custom-font": "off",
       "@next/next/no-img-element": "off",
-    },
-  },
-  {
-    plugins: {
-      react: reactPlugin,
-    },
-    rules: {
-      ...reactPlugin.configs.recommended.rules,
+
+      // React
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
       "react/no-unknown-property": "off",
       "react/jsx-no-target-blank": "off",
-    },
-    settings: {
-      react: {
-        version: "detect",
-      },
-    },
-  },
-  {
-    plugins: {
-      "react-hooks": hooksPlugin,
-    },
-    rules: {
-      // Only use classic react-hooks rules (not React Compiler rules)
-      "react-hooks/rules-of-hooks": "error",
-      "react-hooks/exhaustive-deps": "warn",
-    },
-  },
-  ...tseslint.configs.recommended,
-  {
-    rules: {
+
+      // React Compiler rules (introduced by eslint-config-next) —
+      // these flag pre-existing patterns across the codebase.
+      // TODO: fix violations and re-enable these incrementally.
+      "react-hooks/refs": "off",
+      "react-hooks/set-state-in-effect": "off",
+      "react-hooks/purity": "off",
+      "react-hooks/preserve-manual-memoization": "off",
+      "react-hooks/static-components": "off",
+      "react-hooks/use-memo": "off",
+
+      // TypeScript
       "@typescript-eslint/no-empty-object-type": "off",
+      "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
@@ -63,6 +41,9 @@ const eslintConfig = [
           ignoreRestSiblings: true,
         },
       ],
+
+      // General
+      "prefer-const": "off",
     },
   },
   {

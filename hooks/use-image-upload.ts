@@ -97,7 +97,7 @@ export function useImageUpload({ maxFiles, maxFileSize, images, dispatch }: UseI
             }
 
             finalUrl = `data:image/svg+xml,${encodedSvg}`;
-          } catch (error) {
+          } catch (_error) {
             handleError();
             return;
           }

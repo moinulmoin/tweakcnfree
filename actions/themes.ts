@@ -15,7 +15,6 @@ import {
   ErrorCode,
   actionError,
   actionSuccess,
-  type ActionResult,
 } from "@/types/errors";
 import { MAX_FREE_THEMES } from "@/lib/constants";
 
@@ -70,9 +69,7 @@ export async function getThemes() {
         styles: themeTable.styles,
         createdAt: themeTable.createdAt,
         updatedAt: themeTable.updatedAt,
-        isPublished: sql<boolean>`${communityTheme.id} is not null`.as(
-          "is_published"
-        ),
+        isPublished: sql<boolean>`${communityTheme.id} is not null`.as("is_published"),
       })
       .from(themeTable)
       .leftJoin(communityTheme, eq(themeTable.id, communityTheme.themeId))

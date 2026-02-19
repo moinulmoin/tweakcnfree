@@ -48,7 +48,7 @@ export function AIGenerationCTA() {
                       variant="outline"
                       className="border-primary/20 bg-background/50 hover:bg-accent/50 h-14 rounded-full px-8 text-lg backdrop-blur-sm"
                     >
-                      It's Free
+                      It&apos;s Free
                     </Button>
                   </Link>
                 </div>
@@ -86,12 +86,12 @@ export function AIGenerationCTA() {
                 {/* Glassmorphism Container */}
                 <div className="relative z-10 overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-2xl backdrop-blur-xl dark:border-white/5 dark:bg-black/5">
                   <div className="relative h-[550px] w-full p-6">
-                    <AIChatDemo disabled={false} className="h-full pb-0 bg-transparent" />
+                    <AIChatDemo disabled={false} className="h-full bg-transparent pb-0" />
                   </div>
                 </div>
 
                 {/* Background Glow */}
-                <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-secondary/20 blur-3xl -z-10 rounded-full opacity-50" />
+                <div className="from-primary/20 to-secondary/20 absolute -inset-4 -z-10 rounded-full bg-gradient-to-r opacity-50 blur-3xl" />
               </motion.div>
             </div>
           </div>
