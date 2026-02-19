@@ -18,7 +18,7 @@ This is a self-hostable fork of [tweakcn](https://github.com/jnsahaj/tweakcn) wi
 | AI from images | Pro only | **Free** |
 | Save themes | Limited free | **Free** |
 | Subscription/paywall | Yes ($8/mo) | **None** |
-| AI provider | Google Gemini | **GLM (Z.ai)** |
+| AI provider | Google Gemini | **Any OpenAI-compatible** |
 | Self-hostable | No | **Yes** |
 
 ## Self-Hosting
@@ -27,7 +27,7 @@ This is a self-hostable fork of [tweakcn](https://github.com/jnsahaj/tweakcn) wi
 
 - Node.js 18+ and pnpm
 - A PostgreSQL database (Neon, Supabase, Railway, any provider — or your own)
-- A [Z.ai](https://z.ai/model-api) API key (free tier available)
+- An API key from any OpenAI-compatible provider ([OpenRouter](https://openrouter.ai), [OpenAI](https://platform.openai.com), [Together](https://together.ai), etc.)
 - OAuth credentials (Google or GitHub) for user authentication
 
 ### 1. Clone and install
@@ -54,16 +54,16 @@ cp .env.example .env.local
 | `BETTER_AUTH_SECRET` | Any random string for session encryption |
 | `GOOGLE_CLIENT_ID` | Google OAuth client ID ([setup](https://www.better-auth.com/docs/authentication/google)) |
 | `GOOGLE_CLIENT_SECRET` | Google OAuth client secret |
-| `GLM_API_KEY` | Z.ai API key from [z.ai/model-api](https://z.ai/model-api) |
+| `LLM_API_KEY` | API key for your LLM provider |
 
 **Optional variables:**
 
 | Variable | Default | Description |
 |---|---|---|
-| `GLM_BASE_URL` | `https://api.z.ai/api/coding/paas/v4` | Z.ai endpoint (coding plan, regular, or China) |
-| `GLM_BASE_MODEL_ID` | `glm-4.6v` | Vision model for chat + image input |
-| `GLM_THEME_MODEL_ID` | `glm-4.7` | Flagship model for theme generation |
-| `GLM_PROMPT_MODEL_ID` | `glm-4.7-flash` | Fast model for prompt enhancement |
+| `LLM_BASE_URL` | `https://openrouter.ai/api/v1` | Any OpenAI-compatible endpoint |
+| `LLM_BASE_MODEL_ID` | `google/gemini-2.5-flash` | Chat model |
+| `LLM_THEME_MODEL_ID` | `google/gemini-2.5-flash` | Theme generation model |
+| `LLM_PROMPT_MODEL_ID` | `google/gemini-2.5-flash` | Prompt enhancement model |
 | `GITHUB_CLIENT_ID` | — | GitHub OAuth (alternative to Google) |
 | `GITHUB_CLIENT_SECRET` | — | GitHub OAuth secret |
 | `GOOGLE_FONTS_API_KEY` | — | Enables the font browser |
@@ -102,7 +102,7 @@ export const AI_REQUEST_FREE_TIER_LIMIT = 5; // per day — change to whatever y
 ## Credits
 
 - Built on [tweakcn](https://github.com/jnsahaj/tweakcn) by [Sahaj](https://github.com/jnsahaj)
-- AI powered by [Zhipu AI / Z.ai](https://z.ai) GLM models, using the [Z.ai Coding Plan](https://z.ai/pricing)
+- AI powered by any OpenAI-compatible provider (defaults to [OpenRouter](https://openrouter.ai))
 
 ## Sponsor
 

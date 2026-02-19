@@ -8,38 +8,12 @@ import { validateSubscriptionAndUsage } from "@/lib/subscription";
 import { AdditionalAIContext, ChatMessage } from "@/types/ai";
 import { SubscriptionRequiredError } from "@/types/errors";
 import { convertMessagesToModelMessages } from "@/utils/ai/message-converter";
-import { Ratelimit } from "@upstash/ratelimit";
-import { Redis } from "@upstash/redis";
 import { createUIMessageStream, createUIMessageStreamResponse, stepCountIs, streamText } from "ai";
-import { headers } from "next/headers";
 import { NextRequest } from "next/server";
-
-const redis = Redis.fromEnv();
-const ratelimit = new Ratelimit({
-  redis,
-  limiter: Ratelimit.fixedWindow(5, "60s"),
-});
 
 export async function POST(req: NextRequest) {
   try {
     const userId = await getCurrentUserId(req);
-    const headersList = await headers();
-
-    if (process.env.NODE_ENV !== "development") {
-      const ip = headersList.get("x-forwarded-for") ?? "anonymous";
-      const { success, limit, reset, remaining } = await ratelimit.limit(ip);
-
-      if (!success) {
-        return new Response("Rate limit exceeded. Please try again later.", {
-          status: 429,
-          headers: {
-            "X-RateLimit-Limit": limit.toString(),
-            "X-RateLimit-Remaining": remaining.toString(),
-            "X-RateLimit-Reset": reset.toString(),
-          },
-        });
-      }
-    }
 
     const subscriptionCheck = await validateSubscriptionAndUsage(userId);
 

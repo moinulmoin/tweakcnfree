@@ -32,14 +32,6 @@ import type {
   CommunityFilterOption,
   CommunityThemesResponse,
 } from "@/types/community";
-import { Ratelimit } from "@upstash/ratelimit";
-import { Redis } from "@upstash/redis";
-
-const redis = Redis.fromEnv();
-const ratelimit = new Ratelimit({
-  redis,
-  limiter: Ratelimit.fixedWindow(5, "3600s"),
-});
 
 async function getOptionalUserId(): Promise<string | null> {
   try {
@@ -151,9 +143,7 @@ export async function getCommunityThemes(
         authorId: userTable.id,
         authorName: userTable.name,
         authorImage: userTable.image,
-        likeCount: sql<number>`coalesce(${likeCountSubquery.likeCount}, 0)`.as(
-          "total_likes"
-        ),
+        likeCount: sql<number>`coalesce(${likeCountSubquery.likeCount}, 0)`.as("total_likes"),
         ...(userId
           ? {
               isLikedByMe: sql<boolean>`exists(
@@ -167,10 +157,7 @@ export async function getCommunityThemes(
       .from(communityTheme)
       .innerJoin(themeTable, eq(communityTheme.themeId, themeTable.id))
       .innerJoin(userTable, eq(communityTheme.userId, userTable.id))
-      .leftJoin(
-        likeCountSubquery,
-        eq(communityTheme.id, likeCountSubquery.themeId)
-      );
+      .leftJoin(likeCountSubquery, eq(communityTheme.id, likeCountSubquery.themeId));
 
     let results;
 
@@ -184,9 +171,7 @@ export async function getCommunityThemes(
         .offset(offset);
     } else if (sort === "newest") {
       if (cursor && typeof cursor === "string") {
-        conditions.push(
-          sql`${communityTheme.publishedAt} < ${cursor}`
-        );
+        conditions.push(sql`${communityTheme.publishedAt} < ${cursor}`);
       }
       results = await baseQuery
         .where(conditions.length > 0 ? and(...conditions) : undefined)
@@ -195,9 +180,7 @@ export async function getCommunityThemes(
     } else {
       // oldest
       if (cursor && typeof cursor === "string") {
-        conditions.push(
-          sql`${communityTheme.publishedAt} > ${cursor}`
-        );
+        conditions.push(sql`${communityTheme.publishedAt} > ${cursor}`);
       }
       results = await baseQuery
         .where(conditions.length > 0 ? and(...conditions) : undefined)
@@ -211,8 +194,7 @@ export async function getCommunityThemes(
     let nextCursor: string | number | null = null;
     if (hasMore) {
       if (sort === "popular") {
-        nextCursor =
-          (typeof cursor === "number" ? cursor : 0) + limit;
+        nextCursor = (typeof cursor === "number" ? cursor : 0) + limit;
       } else {
         const lastTheme = themes[themes.length - 1];
         nextCursor = lastTheme.publishedAt.toISOString();
@@ -229,9 +211,7 @@ export async function getCommunityThemes(
               tag: communityThemeTag.tag,
             })
             .from(communityThemeTag)
-            .where(
-              inArray(communityThemeTag.communityThemeId, communityThemeIds)
-            )
+            .where(inArray(communityThemeTag.communityThemeId, communityThemeIds))
         : [];
 
     const tagsMap = new Map<string, string[]>();
@@ -277,9 +257,7 @@ export async function publishTheme(
 
     // Validate tags
     if (tags.length > MAX_TAGS_PER_THEME) {
-      throw new ValidationError(
-        `You can select at most ${MAX_TAGS_PER_THEME} tags`
-      );
+      throw new ValidationError(`You can select at most ${MAX_TAGS_PER_THEME} tags`);
     }
     const validTags = tags.filter((t): t is string =>
       (COMMUNITY_THEME_TAGS as readonly string[]).includes(t)
@@ -308,17 +286,6 @@ export async function publishTheme(
         ErrorCode.ALREADY_PUBLISHED,
         "This theme is already published to the community."
       );
-    }
-
-    // Rate limit
-    if (process.env.NODE_ENV !== "development") {
-      const { success } = await ratelimit.limit(`publish:${userId}`);
-      if (!success) {
-        return actionError(
-          ErrorCode.UNKNOWN_ERROR,
-          "You're publishing too fast. Please try again later."
-        );
-      }
     }
 
     const id = crypto.randomUUID();
@@ -351,9 +318,7 @@ export async function publishTheme(
   }
 }
 
-export async function unpublishTheme(
-  themeId: string
-): Promise<ActionResult<{ success: boolean }>> {
+export async function unpublishTheme(themeId: string): Promise<ActionResult<{ success: boolean }>> {
   try {
     const userId = await getCurrentUserId();
 
@@ -363,18 +328,11 @@ export async function unpublishTheme(
 
     const [deleted] = await db
       .delete(communityTheme)
-      .where(
-        and(
-          eq(communityTheme.themeId, themeId),
-          eq(communityTheme.userId, userId)
-        )
-      )
+      .where(and(eq(communityTheme.themeId, themeId), eq(communityTheme.userId, userId)))
       .returning({ id: communityTheme.id });
 
     if (!deleted) {
-      throw new ThemeNotFoundError(
-        "Published theme not found or not owned by user"
-      );
+      throw new ThemeNotFoundError("Published theme not found or not owned by user");
     }
 
     return actionSuccess({ success: true });
@@ -398,24 +356,14 @@ export async function toggleLikeTheme(
     const [existingLike] = await db
       .select()
       .from(themeLike)
-      .where(
-        and(
-          eq(themeLike.userId, userId),
-          eq(themeLike.themeId, communityThemeId)
-        )
-      )
+      .where(and(eq(themeLike.userId, userId), eq(themeLike.themeId, communityThemeId)))
       .limit(1);
 
     if (existingLike) {
       // Unlike
       await db
         .delete(themeLike)
-        .where(
-          and(
-            eq(themeLike.userId, userId),
-            eq(themeLike.themeId, communityThemeId)
-          )
-        );
+        .where(and(eq(themeLike.userId, userId), eq(themeLike.themeId, communityThemeId)));
     } else {
       // Like
       await db.insert(themeLike).values({
@@ -444,9 +392,7 @@ export async function toggleLikeTheme(
   }
 }
 
-export async function getCommunityDataForTheme(
-  themeId: string
-): Promise<{
+export async function getCommunityDataForTheme(themeId: string): Promise<{
   communityThemeId: string;
   author: { id: string; name: string; image: string | null };
   likeCount: number;
@@ -473,10 +419,7 @@ export async function getCommunityDataForTheme(
         authorId: userTable.id,
         authorName: userTable.name,
         authorImage: userTable.image,
-        likeCount:
-          sql<number>`coalesce(${likeCountSubquery.likeCount}, 0)`.as(
-            "total_likes"
-          ),
+        likeCount: sql<number>`coalesce(${likeCountSubquery.likeCount}, 0)`.as("total_likes"),
         ...(userId
           ? {
               isLikedByMe: sql<boolean>`exists(
@@ -489,10 +432,7 @@ export async function getCommunityDataForTheme(
       })
       .from(communityTheme)
       .innerJoin(userTable, eq(communityTheme.userId, userTable.id))
-      .leftJoin(
-        likeCountSubquery,
-        eq(communityTheme.id, likeCountSubquery.themeId)
-      )
+      .leftJoin(likeCountSubquery, eq(communityTheme.id, likeCountSubquery.themeId))
       .where(eq(communityTheme.themeId, themeId))
       .limit(1);
 
@@ -512,8 +452,7 @@ export async function getCommunityDataForTheme(
         image: result.authorImage,
       },
       likeCount: Number(result.likeCount),
-      isLikedByMe:
-        "isLikedByMe" in result ? Boolean(result.isLikedByMe) : false,
+      isLikedByMe: "isLikedByMe" in result ? Boolean(result.isLikedByMe) : false,
       publishedAt: result.publishedAt.toISOString(),
       tags: tagRows.map((r) => r.tag),
     };
@@ -554,9 +493,7 @@ export async function updateCommunityThemeTags(
     }
 
     if (tags.length > MAX_TAGS_PER_THEME) {
-      throw new ValidationError(
-        `You can select at most ${MAX_TAGS_PER_THEME} tags`
-      );
+      throw new ValidationError(`You can select at most ${MAX_TAGS_PER_THEME} tags`);
     }
 
     const validTags = tags.filter((t): t is string =>
@@ -567,24 +504,15 @@ export async function updateCommunityThemeTags(
     const [ct] = await db
       .select({ id: communityTheme.id })
       .from(communityTheme)
-      .where(
-        and(
-          eq(communityTheme.themeId, themeId),
-          eq(communityTheme.userId, userId)
-        )
-      )
+      .where(and(eq(communityTheme.themeId, themeId), eq(communityTheme.userId, userId)))
       .limit(1);
 
     if (!ct) {
-      throw new ThemeNotFoundError(
-        "Published theme not found or not owned by user"
-      );
+      throw new ThemeNotFoundError("Published theme not found or not owned by user");
     }
 
     // Delete existing tags and insert new ones
-    await db
-      .delete(communityThemeTag)
-      .where(eq(communityThemeTag.communityThemeId, ct.id));
+    await db.delete(communityThemeTag).where(eq(communityThemeTag.communityThemeId, ct.id));
 
     if (validTags.length > 0) {
       await db.insert(communityThemeTag).values(
@@ -605,9 +533,7 @@ export async function updateCommunityThemeTags(
   }
 }
 
-export async function getCommunityTagCounts(): Promise<
-  { tag: string; count: number }[]
-> {
+export async function getCommunityTagCounts(): Promise<{ tag: string; count: number }[]> {
   try {
     const rows = await db
       .select({
